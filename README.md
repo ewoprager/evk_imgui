@@ -8,7 +8,7 @@ A simple implementation of the ImGui render pipeline using evk.
 
 To initialise:
 
-- After creating each of `EVK::Devices` and `EVK::Interface`, and calling the appropriate ImGui 'Init' function according to your window display, create an instance of `EVK_Imgui::Renderer`.
+- After creating each of `EVK::Devices` and `EVK::Interface`, and calling the appropriate ImGui 'Init' function according to your window display, create an instance of `EVK_ImGui::Renderer`.
 - E.g.:
 ```c++
 std::shared_ptr<EVK::Devices> devices = std::make_shared<EVK::Devices>(...);
@@ -17,7 +17,7 @@ std::shared_ptr<EVK::Interface> interface = std::make_shared<EVK::Interface>(dev
 ...
 ImGui_ImplSDL2_InitForVulkan(window);
 ...
-EVK_Imgui::Renderer guiRenderer {devices, interface->GetRenderPassHandle()};
+EVK_ImGui::Renderer guiRenderer {devices, interface->GetRenderPassHandle()};
 ```
 
 In your render loop:
