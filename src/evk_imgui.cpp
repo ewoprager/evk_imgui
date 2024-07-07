@@ -6,7 +6,7 @@
 #include <evk/ShaderProgram.hpp>
 #include <evk/Resources.hpp>
 
-namespace EVK_Imgui {
+namespace EVK_ImGui {
 
 namespace Pipeline {
 
@@ -155,7 +155,7 @@ std::shared_ptr<EVK::TextureSampler> CreateSampler(std::shared_ptr<EVK::Devices>
 	return std::make_shared<EVK::TextureSampler>(devices, info);
 }
 
-bool RenderDrawData(std::shared_ptr<EVK::Devices> devices, ImDrawData* draw_data, const EVK::CommandEnvironment &ci, std::shared_ptr<Pipeline::type> pipeline){
+bool RenderDrawData(ImDrawData* draw_data, const EVK::CommandEnvironment &ci, std::shared_ptr<Pipeline::type> pipeline, std::shared_ptr<EVK::VertexBufferObject> vbo, std::shared_ptr<EVK::IndexBufferObject> ibo){
 	// Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates != framebuffer coordinates)
 	//	int fb_width = (int)(draw_data->DisplaySize.x * draw_data->FramebufferScale.x);
 	//	int fb_height = (int)(draw_data->DisplaySize.y * draw_data->FramebufferScale.y);
@@ -179,9 +179,6 @@ bool RenderDrawData(std::shared_ptr<EVK::Devices> devices, ImDrawData* draw_data
 	//	IM_ASSERT(wrb->Count == v->ImageCount);
 	//	wrb->Index = (wrb->Index + 1) % wrb->Count;
 	//	ImGui_ImplVulkan_FrameRenderBuffers* rb = &wrb->FrameRenderBuffers[wrb->Index];
-	
-	static std::shared_ptr<EVK::VertexBufferObject> vbo = std::make_shared<EVK::VertexBufferObject>(devices);
-	static std::shared_ptr<EVK::IndexBufferObject> ibo = std::make_shared<EVK::IndexBufferObject>(devices);
 	
 	if (draw_data->TotalVtxCount > 0)	{
 		//		// Create or resize the vertex/index buffers
@@ -326,13 +323,15 @@ bool RenderDrawData(std::shared_ptr<EVK::Devices> devices, ImDrawData* draw_data
 	return true;
 }
 
-Renderer::Renderer(std::shared_ptr<EVK::Devices> _devices, VkRenderPass renderPassHandle) : devices(_devices) {
+Renderer::Renderer(std::shared_ptr<EVK::Devices> devices, VkRenderPass renderPassHandle) {
+	vbo = std::make_shared<EVK::VertexBufferObject>(devices);
+	ibo = std::make_shared<EVK::IndexBufferObject>(devices);
 	pipeline = Pipeline::Build(devices, renderPassHandle);
 	pipeline->iDescriptorSet<0>().iDescriptor<0>().Set({{{CreateFontsTexture(devices), CreateSampler(devices)}}});
 }
 
 void Renderer::Render(ImDrawData *drawData, const EVK::CommandEnvironment &ci){
-	RenderDrawData(devices, drawData, ci, pipeline);
+	RenderDrawData(drawData, ci, pipeline, vbo, ibo);
 }
 
-} // namespace EVK_Imgui
+} // namespace EVK_ImGui

@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <evk/ShaderProgram.hpp>
 
-namespace EVK_Imgui {
+namespace EVK_ImGui {
 
 namespace Pipeline {
 
@@ -59,13 +59,14 @@ using type = EVK::RenderPipeline<VertexShader::type, FragmentShader::type>;
 
 class Renderer {
 public:
-	Renderer(std::shared_ptr<EVK::Devices> _devices, VkRenderPass renderPassHandle);
+	Renderer(std::shared_ptr<EVK::Devices> devices, VkRenderPass renderPassHandle);
 	
 	void Render(ImDrawData *drawData, const EVK::CommandEnvironment &ci);
 	
 private:
-	std::shared_ptr<EVK::Devices> devices;
 	std::shared_ptr<Pipeline::type> pipeline;
+	std::shared_ptr<EVK::VertexBufferObject> vbo;
+	std::shared_ptr<EVK::IndexBufferObject> ibo;
 };
 
-} // namespace EVK_Imgui
+} // namespace EVK_ImGui

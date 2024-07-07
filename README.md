@@ -20,11 +20,11 @@ ImGui_ImplSDL2_InitForVulkan(window);
 EVK_Imgui::Renderer guiRenderer {devices, interface->GetRenderPassHandle()};
 ```
 
-In you render loop
+In your render loop:
 
 - Begin with the appropriate ImGui 'NewFrame' function according to your window display.
 - Define your gui layout as normal with `ImGui::NewFrame()` and `ImGui::Render()`.
-- At the point where you are recording your command buffer for your swap chain render pass, get the draw data from Imgui and call `::Render(...)` on your renderer object.
+- At the point where you are recording your command buffer for your swap chain render pass, get the draw data from ImGui and call `Render(...)` on your renderer object.
 - E.g.:
 ```c++
 ImGui_ImplSDL2_NewFrame();
