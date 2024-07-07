@@ -1,8 +1,4 @@
-#include <imgui.h>
-#include <backends/imgui_impl_sdl2.h>
-#include <backends/imgui_impl_vulkan.h>
-
-#include "gui.h"
+#include "evk_imgui.h"
 
 std::shared_ptr<EVK::TextureImage> ImGui_CreateFontsTexture(std::shared_ptr<EVK::Devices> devices){
 	ImGuiIO& io = ImGui::GetIO();

@@ -1,20 +1,22 @@
 cmake_minimum_required(VERSION 3.24)
+set(CMAKE_INSTALL_PREFIX "/Users/eprager/local")
 
-file(
-GLOB_RECURSE HEADERS
-RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-"include/*.h"
+file(GLOB HEADERS
+	 RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+	 CONFIGURE_DEPENDS
+	 "include/*.h"
 )
 
-file(
-GLOB_RECURSE SOURCES
-RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-"src/*.cpp"
+file(GLOB SOURCES
+	 RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+	 CONFIGURE_DEPENDS
+	 "src/*.cpp"
+	 "imgui/*.cpp"
 )
 
 project(evk_imgui CXX)
 
-add_executable(${PROJECT_NAME}
+add_library(${PROJECT_NAME}
             "${CMAKE_CURRENT_SOURCE_DIR}/${SOURCES}"
             "${CMAKE_CURRENT_SOURCE_DIR}/${HEADERS}"
             )
@@ -24,6 +26,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
                            "/usr/local/include/"
                            "/Users/eprager/local/include/"
                            "/opt/local/include/"
+                           "${CMAKE_CURRENT_SOURCE_DIR}/imgui"
                            )
 
 target_link_directories(${PROJECT_NAME} PUBLIC
@@ -39,3 +42,10 @@ target_link_libraries(${PROJECT_NAME}
                       mattresses
                       evk
                       )
+
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")
+
+install(TARGETS ${PROJECT_NAME}
+        LIBRARY DESTINATION "lib"
+        PUBLIC_HEADER DESTINATION "include/evk_imgui"
+)
