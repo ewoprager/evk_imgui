@@ -6,6 +6,10 @@ A simple implementation of the ImGui render pipeline using evk.
 
 *Note: As a result of a cmake skill issue, this library requires that the ImGui spirv shaders are at the locations specified in the string literals found in evk_imgui.h. This will be the case automatically if your project has the ImGui repo one directory out of the cmake build directory.*
 
+- Add the ImGui repository to your project, either by copying it in or adding it as a git submodule.
+- Configure your build to include the `.h` and `.cpp` files in `imgui/`, and whatever backend implementation `.cpp` you need for your window display (e.g. `imgui/backends/imgui_impl_sdl.cpp`).
+- You only need to include in your code `evk_imgui/evk_imgui.h` and whatever ImGui implementation you need for your window display (e.g. `imgui/backends/imgui_impl_sdl2.h`).
+
 To initialise:
 
 - After creating each of `EVK::Devices` and `EVK::Interface`, and calling the appropriate ImGui 'Init' function according to your window display, create an instance of `EVK_ImGui::Renderer`.
